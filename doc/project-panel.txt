@@ -1,0 +1,122 @@
+*project-panel.txt*  Project Panel for Neovim
+
+==============================================================================
+CONTENTS                                                      *project-panel*
+
+1. Introduction                          |project-panel-intro|
+2. Setup                                 |project-panel-setup|
+3. Commands                              |project-panel-commands|
+4. Configuration                         |project-panel-config|
+5. Keymaps                               |project-panel-keymaps|
+6. Highlights                            |project-panel-highlights|
+
+==============================================================================
+1. Introduction                                    *project-panel-intro*
+
+project-panel.nvim is a VS Code-like project panel for Neovim. It provides
+a sidebar implementing a hierarchical file explorer with directory tree
+navigation, expand/collapse folders, file icons, and file operations.
+
+Features:
+  - Hierarchical tree view of the workspace/project directory
+  - Expand and collapse folders dynamically
+  - File icons for different file types (requires nvim-web-devicons)
+  - Basic file operations (create, rename, delete, move files/folders)
+  - Auto-closing sidebar when it's the last window in Neovim
+  - Synced with Neovim's current working directory (cwd) changes
+  - Fully customizable aesthetics, width, and position
+
+==============================================================================
+2. Setup                                           *project-panel-setup*
+
+Lazy.nvim:
+    {
+      "your-username/projectpenel",
+      dir = "~/Documents/projectpenel",
+      dependencies = { "nvim-tree/nvim-web-devicons" }, -- optional
+      config = function()
+        require("project-panel").setup({
+          width = 30,
+          position = "left",
+          auto_open = false,
+          show_hidden = false,
+        })
+      end,
+      keys = {
+        { "<leader>pp", "<cmd>ProjectPanelToggle<cr>", desc = "Toggle Project Panel" },
+      },
+    }
+
+Packer:
+    use {
+      "your-username/projectpenel",
+      requires = { "nvim-tree/nvim-web-devicons" }, -- optional
+      config = function()
+        require("project-panel").setup({ ... })
+      end
+    }
+
+==============================================================================
+3. Commands                                        *project-panel-commands*
+
+:ProjectPanel            Open the project panel
+:ProjectPanelClose       Close the project panel
+:ProjectPanelToggle      Toggle the project panel
+:ProjectPanelRefresh     Refresh the project list / file explorer tree
+
+==============================================================================
+4. Configuration                                     *project-panel-config*
+
+Default configuration:
+    {
+      width = 30,                     -- Panel width
+      position = "left",              -- "left" or "right"
+      auto_open = false,              -- Open on startup
+      show_hidden = false,            -- Show hidden files/directories
+      use_nerd_fonts = true,          -- Use Nerd Font icons (autodetected)
+      icons = {                       -- Default icons fallback
+        folder_closed = "📁",
+        folder_open = "📂",
+        default_file = "📄",
+        arrow_closed = "▸",
+        arrow_open = "▾",
+      }
+    }
+
+Example:
+    require("project-panel").setup({
+      width = 35,
+      position = "right",
+      show_hidden = true,
+    })
+
+==============================================================================
+5. Keymaps (in panel buffer)                        *project-panel-keymaps*
+
+  <CR> / o       Open selected file or toggle folder expand/collapse
+  a              Create new file or folder (ends with / for folder)
+  r              Rename selected file or folder
+  d              Delete selected file or folder (with confirmation)
+  m              Move selected file or folder to a new path
+  - / u          Go up to parent directory
+  C              Set selected folder as workspace root
+  R              Refresh file explorer tree
+  q / <Esc>      Close Project Panel sidebar
+  ?              Toggle the Project Panel floating help menu
+
+==============================================================================
+6. Highlights                                      *project-panel-highlights*
+
+  ProjectPanelTitle      - Sidebar title header highlight
+  ProjectPanelBorder     - Sidebar header border separator highlight
+  ProjectPanelGuide      - Tree vertical indentation guide lines highlight
+  ProjectPanelDirectory  - Directory name text highlight
+  ProjectPanelFile       - File name text highlight
+  ProjectPanelFolderIcon - Folder icon highlight
+  ProjectPanelFileIcon   - Fallback file icon highlight
+
+Default highlights link to:
+  Title, Comment, Comment, Directory, Normal, Directory, Normal
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
